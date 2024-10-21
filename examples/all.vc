@@ -1,0 +1,124 @@
+
+@include (header) [stdio, stdlib];
+@include (file) [fmanip.h];
+
+// Declare a structure for a Person
+@declare Person (const.struct) ["char name!100", "int age", "float height"];
+
+// Declare an enumeration for WeekDays
+@declare WeekDay (const.enum) ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+// Function to print a message
+@function PrintMessage (void) [NULL]:
+{
+    @call (h.dc.print) ["This is a message from the new language!\n"];
+}
+
+// Function to add two numbers
+@function AddNumbers (int) [int num1, int num2]:
+{
+    @call (h.dc.return) [num1 + num2];
+}
+
+// Function to print an array of integers
+@function PrintArray (void) [int arr[], int size]:
+{
+    @control IterateArray (for) [int i = 0; i < size; i++]:
+    {
+        @call (h.dc.print) ["Element %d: %d\n" <- i; arr[i]];
+    }
+}
+
+// Function to modify a value through a pointer
+@function ModifyPointer (void) [int* ptr]:
+{
+    *ptr <- 50;
+}
+
+// Function to read content from a file
+@function ReadFile (void) [const.char* filename]:
+{
+    @declare file (const.str) [filename];
+    @declare fileContent (const.str) [""];
+
+    @call (dc.fopen) [filename, "r", file];
+    @call (dc.fread) [file, fileContent];
+    @call (h.dc.print) [fileContent];
+    @call (dc.fclose) [file];
+}
+
+// Main function to execute the program
+@function main (int) [NULL]:
+{
+    // Declare variables
+    @declare (var.int) [num1 = 5];
+    @declare (var.int) [num2 = 10];
+    @declare (var.int) [sumResult];
+    @declare (var.int) [arr[3] = {1, 2, 3}];
+    @declare (var.int) [value = 10];
+    @declare (const.str) [day = WeekDay$1]; // Monday
+
+    // Call PrintMessage function
+    @call (self.PrintMessage);
+
+    // Calculate sum
+    @declare (const.int) [sumResult <- @call (self.AddNumbers) [num1, num2]];
+    @call (h.dc.print) ["Sum of %d and %d is %d\n" <- num1; num2; sumResult];
+
+    // Print the array
+    @call (self.PrintArray) [arr, 3];
+
+    // Modify a value through pointer
+    @call (self.ModifyPointer) [&value];
+    @call (h.dc.print) ["Modified value is %d\n" <- value];
+
+    // Read content from a file
+    @call (self.ReadFile) ["example.txt"];
+
+    // Switch-case for day of the week
+    @control dayCheck (switch) [day]:
+    {
+        @control dayCheck (case) [Monday]:
+        {
+            @call (h.dc.print) ["Today is Monday"];
+        }
+        @control dayCheck (case) [Tuesday]:
+        {
+            @call (h.dc.print) ["Today is Tuesday"];
+        }
+        @control dayCheck (case) [Wednesday]:
+        {
+            @call (h.dc.print) ["Today is Wednesday"];
+        }
+        @control dayCheck (case) [Thursday]:
+        {
+            @call (h.dc.print) ["Today is Thursday"];
+        }
+        @control dayCheck (case) [Friday]:
+        {
+            @call (h.dc.print) ["Today is Friday"];
+        }
+        @control dayCheck (case) [Saturday]:
+        {
+            @call (h.dc.print) ["Today is Saturday"];
+        }
+        @control dayCheck (case) [Sunday]:
+        {
+            @call (h.dc.print) ["Today is Sunday"];
+        }
+        @control dayCheck (case) [dc.unknown]:
+        {
+            @call (h.dc.print) ["Invalid day"];
+        }
+    }
+
+    // While loop for iterations
+    @declare (var.int) [i = 0];
+    @control loopControl (while) [i < 3]:
+    {
+        @call (h.dc.print) ["Loop iteration: %d\n" <- i];
+        i++;
+    }
+
+    @call (h.dc.return) [0];
+}

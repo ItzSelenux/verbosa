@@ -1,0 +1,7 @@
+@include (header) [stdio];
+@declare (var.int) [integer = 32];
+@function main (int) [h.vc.argv]:
+{
+    @call (file.print) ["%d", self.integer];
+    @call (file.return) [0];
+}

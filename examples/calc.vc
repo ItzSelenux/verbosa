@@ -1,0 +1,45 @@
+@function main (int) [null]
+{
+	@declare (var.int) [num1, num2, continue = 1];
+	@declare (var.char) [op, continueinput];
+
+	@control (while) [continue]:
+	{
+		@call (stdio.print) ["Enter first number: "];
+			@call (h.vc.getinput) [num1];
+		@call (h.vc.print) ["Enter second number: "];
+			@call (h.vc.getinput) [num2];
+
+		@call (h.vc.print) ["Enter operation (+ or -): "];
+			@call (h.vc.getinput) [op];
+
+		@control maincalc (switch) [op]:
+			{
+				@control maincalc (case) ['+']:
+					{
+						@call (h.vc.print) ["Answer: %d\n" <- @call (vc.math) [num1 + num2]];
+					}
+				@control maincalc (case) ['-']:
+					{
+						@call (h.vc.print) ["Answer: %d\n" <- @call (vc.math) [num1 - num2]];
+					}
+				@control maincalc (case) [default]:
+					{
+						@call (h.vc.print) ["Unsupported operation\n"];
+					}
+			}
+
+		@call (h.vc.print) ["Do you want to continue? (Y for yes, N for no): "];
+		@call (h.vc.getinput) [continueinput];
+
+			@control calccontinue (if) [continueinput == "Y"]:
+			{
+				@call (h.vc.getinput) [continue];
+			}
+			@control calccontinue (else) [NULL]:
+			{
+				@modify (continue) [0];
+			}
+	}
+	@call (h.cc.return) [0];
+}

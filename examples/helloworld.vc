@@ -1,0 +1,5 @@
+@function main (int) [h.vc.argv]  // Define main function with int as return type and using system arguments
+{
+    @call (h.vc.print) ["Hello, World!"]; // Call print from standard library using "Hello, World!" (undefined, by default char because use of ") as argument
+    @call (h.vc.return) [0]; // Call return function from standard library, using 0 (undefined, by default int because is a number without decimal) as argument
+}
